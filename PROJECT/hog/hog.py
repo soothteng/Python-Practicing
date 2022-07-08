@@ -11,6 +11,7 @@ GOAL_SCORE = 100  # The goal of Hog is to score 100 points.
 ######################
 
 
+# warning: you need to rolls num_rolls times no matter what happens
 def roll_dice(num_rolls, dice=six_sided):
     """Simulate rolling the DICE exactly NUM_ROLLS > 0 times. Return the sum of
     the outcomes unless any of the outcomes is 1. In that case, return 1.
@@ -23,6 +24,18 @@ def roll_dice(num_rolls, dice=six_sided):
     assert num_rolls > 0, 'Must roll at least once.'
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
+    ans, mark = 0, 0
+    while num_rolls > 0:
+        temp = dice()
+        if temp == 1:
+            mark = 1
+        else:
+            ans += temp
+        num_rolls -= 1
+    if mark == 0:
+        return ans
+    else:
+        return mark
     # END PROBLEM 1
 
 
@@ -267,7 +280,8 @@ def run_experiments():
 
     #print('always_roll(8) win rate:', average_win_rate(always_roll(8)))
     #print('oink_points_strategy win rate:', average_win_rate(oink_points_strategy))
-    print('pigs_on_prime_strategy win rate:', average_win_rate(pigs_on_prime_strategy))
+    print('pigs_on_prime_strategy win rate:',
+          average_win_rate(pigs_on_prime_strategy))
     #print('final_strategy win rate:', average_win_rate(final_strategy))
     "*** You may add additional experiments as you wish ***"
 
