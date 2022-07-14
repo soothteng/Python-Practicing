@@ -56,7 +56,8 @@ def oink_points(player_score, opponent_score):
     # END PROBLEM 2
 
 
-def take_turn(num_rolls, player_score, opponent_score, dice=six_sided, goal=GOAL_SCORE):
+def take_turn(num_rolls, player_score,
+              opponent_score, dice=six_sided, goal=GOAL_SCORE):
     """Simulate a turn rolling NUM_ROLLS dice,
     which may be 0 in the case of a player using Oink Points.
     Return the points scored for the turn by the current player.
@@ -150,8 +151,24 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     leader = None  # To be used in problem 7
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    while score0 < goal and score1 < goal:
+        if who == 0:
+            num_rolls = strategy0(score0, score1)
+            this_turn_score = take_turn(num_rolls, score0, score1, dice, goal)
+            score0 += this_turn_score
+            score0 += pigs_on_prime(score0, score1)
+        else:
+            num_rolls = strategy1(score1, score0)
+            this_turn_score = take_turn(num_rolls, score1, score0, dice, goal)
+            score1 += this_turn_score
+            score1 += pigs_on_prime(score1, score0)
+        who = next_player(who)
+        leader, comment = say(score0, score1, leader)
+        if comment is not None:
+            print(comment)
     # END PROBLEM 5
-    # (note that the indentation for the problem 7 prompt (***YOUR CODE HERE***) might be misleading)
+    # (note that the indentation for the problem 7 prompt
+    # (***YOUR CODE HERE***) might be misleading)
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
     # END PROBLEM 7
@@ -188,6 +205,19 @@ def announce_lead_changes(score0, score1, last_leader=None):
     """
     # BEGIN PROBLEM 6
     "*** YOUR CODE HERE ***"
+    strs = ""
+    if score0 > score1:
+        leader = 0
+    elif score1 > score0:
+        leader = 1
+    else:
+        leader = None
+    if leader is not None and leader != last_leader:
+        strs = 'Player ' + str(leader) + \
+            ' takes the lead by ' + str(abs(score0 - score1))
+    else:
+        strs = None
+    return leader, strs
     # END PROBLEM 6
 
 
@@ -296,11 +326,11 @@ def run_experiments():
     print('Max scoring num rolls for six-sided dice:', six_sided_max)
     print('always_roll(6) win rate:', average_win_rate(always_roll(6)))
 
-    #print('always_roll(8) win rate:', average_win_rate(always_roll(8)))
-    #print('oink_points_strategy win rate:', average_win_rate(oink_points_strategy))
+    # print('always_roll(8) win rate:', average_win_rate(always_roll(8)))
+    # print('oink_points_strategy win rate:', average_win_rate(oink_points_strategy))
     print('pigs_on_prime_strategy win rate:',
           average_win_rate(pigs_on_prime_strategy))
-    #print('final_strategy win rate:', average_win_rate(final_strategy))
+    # print('final_strategy win rate:', average_win_rate(final_strategy))
     "*** You may add additional experiments as you wish ***"
 
 
