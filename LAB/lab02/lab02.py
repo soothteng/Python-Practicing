@@ -14,7 +14,7 @@ def lambda_curry2(func):
     3
     """
     "*** YOUR CODE HERE ***"
-    return ______
+    return lambda x: lambda y: func(x, y)
 
 
 def lambda_curry2_syntax_check():
@@ -22,7 +22,8 @@ def lambda_curry2_syntax_check():
 
     >>> # You aren't expected to understand the code of this test.
     >>> import inspect, ast
-    >>> [type(x).__name__ for x in ast.parse(inspect.getsource(lambda_curry2)).body[0].body]
+    >>> [type(x).__name__ for x in ast.parse
+    (inspect.getsource(lambda_curry2)).body[0].body]
     ['Expr', 'Return']
     """
     # You don't need to edit this function. It's just here to check your work.
@@ -56,6 +57,14 @@ def count_cond(condition):
     8
     """
     "*** YOUR CODE HERE ***"
+    def counter(n):
+        i, count = 1, 0
+        while i <= n:
+            if condition(n, i):
+                count += 1
+            i += 1
+        return count
+    return counter
 
 
 def composer(f, g):
