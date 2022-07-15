@@ -1,15 +1,16 @@
 from operator import add, mul
 
-square = lambda x: x * x
 
-identity = lambda x: x
-
-triple = lambda x: 3 * x
-
-increment = lambda x: x + 1
+def square(x): return x * x
 
 
-HW_SOURCE_FILE = __file__
+def identity(x): return x
+
+
+def triple(x): return 3 * x
+
+
+def increment(x): return x + 1
 
 
 def product(n, term):
@@ -32,6 +33,19 @@ def product(n, term):
     162
     """
     "*** YOUR CODE HERE ***"
+    if n == 1:
+        return term(1)
+    else:
+        return term(n) * product(n - 1, term)
+
+
+def part(merger, n, term):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return term(1)
+    else:
+        return merger(term(n), part(merger, n - 1, term))
 
 
 def accumulate(merger, start, n, term):
@@ -58,7 +72,7 @@ def accumulate(merger, start, n, term):
     >>> accumulate(lambda x, y: (x + y) % 17, 19, 20, square)
     16
     """
-    "*** YOUR CODE HERE ***"
+    return merger(start, part(merger, n, term))
 
 
 def summation_using_accumulate(n, term):
@@ -72,10 +86,11 @@ def summation_using_accumulate(n, term):
     >>> # Check that the bodies of the functions are just return statements.
     >>> # If this errors, make sure you have removed the "***YOUR CODE HERE***".
     >>> import inspect, ast
-    >>> [type(x).__name__ for x in ast.parse(inspect.getsource(summation_using_accumulate)).body[0].body]
+    >>> [type(x).__name__ for x in ast.parse
+    (inspect.getsource(summation_using_accumulate)).body[0].body]
     ['Expr', 'Return']
     """
-    "*** YOUR CODE HERE ***"
+    return accumulate(add, 0, n, term)
 
 
 def product_using_accumulate(n, term):
@@ -93,6 +108,7 @@ def product_using_accumulate(n, term):
     ['Expr', 'Return']
     """
     "*** YOUR CODE HERE ***"
+    return accumulate(mul, 1, n, term)
 
 
 def filtered_accumulate(merger, start, cond, n, term):
@@ -120,6 +136,10 @@ def filtered_accumulate(merger, start, cond, n, term):
     """
     def merge_if(x, y):
         "*** YOUR CODE HERE ***"
+        if cond(y):
+            return merger(x, y)
+        else:
+            return x
     return accumulate(merge_if, start, n, term)
 
 
@@ -154,3 +174,15 @@ def funception(func_a, start):
     >>> func_b5(4)    # Returns None since start < 0
     """
     "*** YOUR CODE HERE ***"
+    def func_b(stop):
+        i = start
+        product = 1
+        if start < 0:
+            return None
+        if start > stop:
+            return func_a(start)
+        while i < stop:
+            product *= func_a(i)
+            i += 1
+        return product
+    return func_b
