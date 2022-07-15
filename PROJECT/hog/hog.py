@@ -284,11 +284,16 @@ def make_averaged(original_function, total_samples=1000):
     """
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    def try_and_average(*args):
+        res = [original_function(*args) for i in range(total_samples)]
+        return sum(res)/total_samples
+    return try_and_average
     # END PROBLEM 8
 
 
 def max_scoring_num_rolls(dice=six_sided, total_samples=1000):
-    """Return the number of dice (1 to 10) that gives the highest average turn score
+    """Return the number of dice (1 to 10) that
+    gives the highest average turn score
     by calling roll_dice with the provided DICE a total of TOTAL_SAMPLES times.
     Assume that the dice always return positive outcomes.
 
@@ -298,6 +303,9 @@ def max_scoring_num_rolls(dice=six_sided, total_samples=1000):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    max_hog = make_averaged(roll_dice, total_samples)
+    trials = [max_hog(i, dice) for i in range(1, 11)]
+    return trials.index(max(trials)) + 1
     # END PROBLEM 9
 
 
