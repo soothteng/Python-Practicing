@@ -347,7 +347,7 @@ def oink_points_strategy(score, opponent_score, threshold=8, num_rolls=6):
     returns NUM_ROLLS otherwise.
     """
     # BEGIN PROBLEM 10
-    return 6  # Remove this line once implemented.
+    return 0 if oink_points(score, opponent_score) >= threshold else num_rolls
     # END PROBLEM 10
 
 
@@ -357,7 +357,11 @@ def pigs_on_prime_strategy(score, opponent_score, threshold=8, num_rolls=6):
     Otherwise, it returns NUM_ROLLS.
     """
     # BEGIN PROBLEM 11
-    return 6  # Remove this line once implemented.
+    oink = oink_points(score, opponent_score)
+    if pigs_on_prime(score + oink, opponent_score):
+        return 0
+    else:
+        return oink_points_strategy(score, opponent_score, threshold, num_rolls)
     # END PROBLEM 11
 
 
@@ -367,7 +371,7 @@ def final_strategy(score, opponent_score):
     *** YOUR DESCRIPTION HERE ***
     """
     # BEGIN PROBLEM 12
-    return 6  # Remove this line once implemented.
+
     # END PROBLEM 12
 
 ##########################
