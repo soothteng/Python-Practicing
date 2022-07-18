@@ -31,6 +31,14 @@ def pick(paragraphs, select, k):
     """
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
+    a = []
+    for element in paragraphs:
+        if select(element):
+            a.append(element)
+    if k > len(a) - 1:
+        return ''
+    else:
+        return a[k]
     # END PROBLEM 1
 
 
@@ -257,8 +265,10 @@ def fastest_words(match):
     >>> p1
     [4, 1, 6]
     """
-    player_indices = range(len(match["times"]))  # contains an *index* for each player
-    word_indices = range(len(match["words"]))    # contains an *index* for each word
+    player_indices = range(
+        len(match["times"]))  # contains an *index* for each player
+    # contains an *index* for each word
+    word_indices = range(len(match["words"]))
     # BEGIN PROBLEM 10
     "*** YOUR CODE HERE ***"
     # END PROBLEM 10
@@ -277,23 +287,29 @@ def match(words, times):
         words: ['Hello', 'world']
         times: [[5, 1], [4, 2]]
     """
-    assert all([type(w) == str for w in words]), 'words should be a list of strings'
-    assert all([type(t) == list for t in times]), 'times should be a list of lists'
-    assert all([isinstance(i, (int, float)) for t in times for i in t]), 'times lists should contain numbers'
-    assert all([len(t) == len(words) for t in times]), 'There should be one word per time.'
+    assert all([type(w) == str for w in words]
+               ), 'words should be a list of strings'
+    assert all([type(t) == list for t in times]
+               ), 'times should be a list of lists'
+    assert all([isinstance(i, (int, float))
+               for t in times for i in t]), 'times lists should contain numbers'
+    assert all([len(t) == len(words) for t in times]
+               ), 'There should be one word per time.'
     return {"words": words, "times": times}
 
 
 def get_word(match, word_index):
     """A utility function that gets the word with index word_index"""
-    assert 0 <= word_index < len(match["words"]), "word_index out of range of words"
+    assert 0 <= word_index < len(
+        match["words"]), "word_index out of range of words"
     return match["words"][word_index]
 
 
 def time(match, player_num, word_index):
     """A utility function for the time it took player_num to type the word at word_index"""
     assert word_index < len(match["words"]), "word_index out of range of words"
-    assert player_num < len(match["times"]), "player_num out of range of players"
+    assert player_num < len(
+        match["times"]), "player_num out of range of players"
     return match["times"][player_num][word_index]
 
 
@@ -312,7 +328,7 @@ enable_multiplayer = False  # Change to True when you're ready to race.
 def run_typing_test(topics):
     """Measure typing speed and accuracy on the command line."""
     paragraphs = lines_from_file('data/sample_paragraphs.txt')
-    select = lambda p: True
+    def select(p): return True
     if topics:
         select = about(topics)
     i = 0
