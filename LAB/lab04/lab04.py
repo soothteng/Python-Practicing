@@ -18,6 +18,12 @@ def flatten(s):
     [[1, [1, 1]], 1, [1, 1]]
     """
     "*** YOUR CODE HERE ***"
+    if not s:
+        return []
+    elif type(s[0]) == list:
+        return flatten(s[0]) + flatten(s[1:])
+    else:
+        return [s[0]] + flatten(s[1:])
 
 
 def insert_items(lst, entry, elem):
@@ -47,6 +53,14 @@ def insert_items(lst, entry, elem):
     True
     """
     "*** YOUR CODE HERE ***"
+    index = 0
+    while index < len(lst):
+        if lst[index] == entry:
+            lst.insert(index + 1, elem)
+            if entry == elem:
+                index += 1
+        index += 1
+    return lst
 
 
 class Minty:
@@ -79,9 +93,11 @@ class Minty:
 
     def create(self, type):
         "*** YOUR CODE HERE ***"
+        return Coin(self.year, type)
 
     def update(self):
         "*** YOUR CODE HERE ***"
+        self.year = Minty.present_year
 
 
 class Coin:
@@ -89,9 +105,15 @@ class Coin:
 
     def __init__(self, year, type):
         "*** YOUR CODE HERE ***"
+        self.year = year
+        if type == ('Dime'):
+            self.cents = 10
+        elif type == ('Nickel'):
+            self.cents = 5
 
     def worth(self):
         "*** YOUR CODE HERE ***"
+        return self.cents + max(0, Minty.present_year - self.year - 50)
 
 
 def couple(s, t):
