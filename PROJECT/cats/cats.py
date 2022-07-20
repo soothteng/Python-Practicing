@@ -95,6 +95,16 @@ def accuracy(typed, reference):
     reference_words = split(reference)
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
+    total = len(typed_words)
+    ref = len(reference_words)
+    correct = 0
+    if total == 0 and ref == 0:
+        return 100.0
+    elif total == 0:
+        return 0.0
+    for t, r in zip(typed_words, reference_words):
+        correct += (t == r)
+    return 100*correct/total
     # END PROBLEM 3
 
 
@@ -113,6 +123,7 @@ def wpm(typed, elapsed):
     assert elapsed > 0, 'Elapsed time must be positive'
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    return len(typed)*12/(elapsed)
     # END PROBLEM 4
 
 
