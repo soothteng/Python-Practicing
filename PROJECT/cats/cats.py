@@ -151,17 +151,25 @@ def autocorrect(typed_word, word_list, diff_function, limit):
     """
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    if typed_word in word_list:
+        return typed_word
+    similar_word = min(
+        word_list, key=lambda w: diff_function(typed_word, w, limit))
+    if diff_function(typed_word, similar_word, limit) > limit:
+        return typed_word
+    else:
+        return similar_word
     # END PROBLEM 5
 
 
-def feline_fixes(typed, reference, limit):
+def feline_fixes(start, goal, limit):
     """A diff function for autocorrect that determines how many letters
     in TYPED need to be substituted to create REFERENCE, then adds the difference in
     their lengths and returns the result.
 
     Arguments:
-        typed: a starting word
-        reference: a string representing a desired goal word
+        start: a starting word
+        goal: a string representing a desired goal word
         limit: a number representing an upper bound on the number of chars that must change
 
     >>> big_limit = 10
@@ -177,7 +185,16 @@ def feline_fixes(typed, reference, limit):
     5
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+    if len(start) == 0:
+        return len(goal)
+    if len(goal) == 0:
+        return len(start)
+    if start[0] != goal[0]:
+        if limit == 0:
+            return 1
+        return 1 + feline_fixes(start[1:], goal[1:], limit - 1)
+    else:
+        return feline_fixes(start[1:], goal[1:], limit)
     # END PROBLEM 6
 
 
