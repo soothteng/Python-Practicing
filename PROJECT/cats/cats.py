@@ -216,9 +216,22 @@ def hidden_kittens(typed, reference, limit):
     >>> hidden_kittens("hiddnehddi", "hidden", limit) > limit # hidden appears 0 times in hiddnehddi
     True
     """
-    # BEGIN PROBLEM 7
-    "*** YOUR CODE HERE ***"
-    # END PROBLEM 7
+    def helper(typed, reference, m, n, limit):
+        if limit == 0:
+            return 1
+        if m == 1 and n == 1:
+            return 1 if (typed[0] == reference[0]) else 0
+        if m == 0:
+            return 0
+        if n == 0:
+            limit -= 1
+            return 1
+        if n > m:
+            return 0
+        return (helper(typed, reference, m-1, n-1, limit) if typed[m-1] == reference[n-1] else 0)\
+            + helper(typed, reference, m-1, n, limit)
+    count = helper(typed, reference, len(typed), len(reference), limit)
+    return count if (count != 0) else limit + 1
 
 
 def final_diff(typed, reference, limit):
@@ -282,6 +295,13 @@ def time_per_word(words, times_per_player):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    lst = []
+    for player in times_per_player:
+        time = []
+        for i in range(len(player) - 1):
+            time.append(player[i+1]-player[i])
+        lst.append(time)
+    return match(words, lst)
     # END PROBLEM 9
 
 
