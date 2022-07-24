@@ -1,12 +1,16 @@
 from operator import add, mul
 
-square = lambda x: x * x
 
-identity = lambda x: x
+def square(x): return x * x
 
-triple = lambda x: 3 * x
 
-increment = lambda x: x + 1
+def identity(x): return x
+
+
+def triple(x): return 3 * x
+
+
+def increment(x): return x + 1
 
 
 LAB_SOURCE_FILE = __file__
@@ -53,6 +57,12 @@ class Account:
         """Return the number of years until balance would grow to amount."""
         assert self.balance > 0 and amount > 0 and self.interest > 0
         "*** YOUR CODE HERE ***"
+        future = self.balance
+        years = 0
+        while future < amount:
+            future += self.interest * future
+            years += 1
+        return years
 
 
 class FreeChecking(Account):
@@ -82,6 +92,17 @@ class FreeChecking(Account):
     free_withdrawals = 2
 
     "*** YOUR CODE HERE ***"
+
+    def __init__(self, account_holder):
+        super().__init__(account_holder)
+        self.withdrawals = 0
+
+    def withdraw(self, amount):
+        self.withdrawals += 1
+        fee = 0
+        if self.withdrawals > self.free_withdrawals:
+            fee = self.withdraw_fee
+        return super().withdraw(amount + fee)
 
 
 def ordered_digits(x):
