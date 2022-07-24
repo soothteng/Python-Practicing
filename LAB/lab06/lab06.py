@@ -19,6 +19,12 @@ def count_occurrences(t, n, x):
     2
     """
     "*** YOUR CODE HERE ***"
+    count = 0
+    for _ in range(n):
+        value = next(t)
+        if value == x:
+            count += 1
+    return count
 
 
 def scale(it, multiplier):
@@ -35,6 +41,8 @@ def scale(it, multiplier):
     [2, 4, 6, 8, 10]
     """
     "*** YOUR CODE HERE ***"
+    for elem in it:
+        yield elem * multiplier
 
 
 def hailstone(n):
@@ -51,3 +59,9 @@ def hailstone(n):
     1
     """
     "*** YOUR CODE HERE ***"
+    yield n
+    if n != 1:
+        if n % 2 == 0:
+            yield from hailstone(n//2)
+        else:
+            yield from hailstone(n*3+1)
