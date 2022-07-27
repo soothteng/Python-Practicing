@@ -22,6 +22,12 @@ def merge(lst1, lst2):
     [2, 2, 3, 4, 4, 6]
     """
     "*** YOUR CODE HERE ***"
+    if not lst1 or not lst2:
+        return lst1 + lst2
+    elif lst1[0] < lst2[0]:
+        return [lst1[0]] + merge(lst1[1:], lst2)
+    else:
+        return [lst2[0]] + merge(lst1, lst2[1:])
 
 
 def remove_odd_indices(lst, odd):
@@ -49,6 +55,12 @@ def remove_odd_indices(lst, odd):
     True
     """
     "*** YOUR CODE HERE ***"
+    if not lst:
+        return lst
+    if odd:
+        return [lst[0]] + remove_odd_indices(lst[2:], odd)
+    else:
+        return remove_odd_indices(lst[1:], not odd)
 
 
 class SmartFridge:
@@ -75,9 +87,18 @@ class SmartFridge:
 
     def add_item(self, item, quantity):
         "*** YOUR CODE HERE ***"
+        if item in self.items:
+            self.items[item] += quantity
+        else:
+            self.items[item] = quantity
+        return f'I now have {self.items[item]} {item}'
 
     def use_item(self, item, quantity):
         "*** YOUR CODE HERE ***"
+        self.items[item] -= min(quantity, self.items[item])
+        if self.items[item] == 0:
+            return f'Oh no, we need more {item}!'
+        return f'I have {self.items[item]} {item} left'
 
 
 class VendingMachine:
@@ -118,3 +139,34 @@ class VendingMachine:
     'Here is your soda.'
     """
     "*** YOUR CODE HERE ***"
+
+    def __init__(self, product, price):
+        self.product = product
+        self.price = price
+        self.stock = 0
+        self.balance = 0
+
+    def restock(self, n):
+        self.stock += n
+        return f'Current {self.product} stock: {self.stock}'
+
+    def add_funds(self, n):
+        if self.stock == 0:
+            return f'Nothing left to vend. Please restock. Here is your ${n}.'
+            # Alternatively, we could have:
+            # return self.vend() + f' Here is your ${n}.'
+        self.balance += n
+        return f'Current balance: ${self.balance}'
+
+    def vend(self):
+        if self.stock == 0:
+            return 'Nothing left to vend. Please restock.'
+        difference = self.price - self.balance
+        if difference > 0:
+            return f'Please update your balance with ${difference} more funds.'
+        message = f'Here is your {self.product}'
+        if difference != 0:
+            message += f' and ${-difference} change'
+        self.balance = 0
+        self.stock -= 1
+        return message + '.'
