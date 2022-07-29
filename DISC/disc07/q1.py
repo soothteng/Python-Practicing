@@ -1,4 +1,4 @@
-from tree_and_list import tree, link
+from tree_and_list import Tree
 
 
 def height(t):
