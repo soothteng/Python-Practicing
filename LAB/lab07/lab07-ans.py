@@ -1,74 +1,3 @@
-def store_digits(n):
-    """Stores the digits of a positive number n in a linked list.
-
-    >>> s = store_digits(1)
-    >>> s
-    Link(1)
-    >>> store_digits(2345)
-    Link(2, Link(3, Link(4, Link(5))))
-    >>> store_digits(876)
-    Link(8, Link(7, Link(6)))
-    >>> # a check for restricted functions
-    >>> import inspect, re
-    >>> cleaned = re.sub(r"#.*\\n", '', re.sub(r'"{3}[\s\S]*?"{3}', '', inspect.getsource(store_digits)))
-    >>> print("Do not use str or reversed!") if any([r in cleaned for r in ["str", "reversed"]]) else None
-    >>> link1 = Link(3, Link(Link(4), Link(5, Link(6))))
-    """
-    "*** YOUR CODE HERE ***"
-    result = Link.empty
-    while n > 0:
-        result = Link(n % 10, result)
-        n //= 10
-    return result
-
-
-def every_other(s):
-    """Mutates a linked list so that all the odd-indiced elements are removed
-    (using 0-based indexing).
-
-    >>> s = Link(1, Link(2, Link(3, Link(4))))
-    >>> every_other(s)
-    >>> s
-    Link(1, Link(3))
-    >>> odd_length = Link(5, Link(3, Link(1)))
-    >>> every_other(odd_length)
-    >>> odd_length
-    Link(5, Link(1))
-    >>> singleton = Link(4)
-    >>> every_other(singleton)
-    >>> singleton
-    Link(4)
-    """
-    "*** YOUR CODE HERE ***"
-    if s is Link.empty or s.rest is Link.empty:
-        return
-    else:
-        s.rest = s.rest.rest
-        every_other(s.rest)
-
-
-def cumulative_mul(t):
-    """Mutates t so that each node's label becomes the product of all labels in
-    the corresponding subtree rooted at t.
-
-    >>> t = Tree(1, [Tree(3, [Tree(5)]), Tree(7)])
-    >>> cumulative_mul(t)
-    >>> t
-    Tree(105, [Tree(15, [Tree(5)]), Tree(7)])
-    >>> otherTree = Tree(2, [Tree(1, [Tree(3), Tree(4), Tree(5)]), Tree(6, [Tree(7)])])
-    >>> cumulative_mul(otherTree)
-    >>> otherTree
-    Tree(5040, [Tree(60, [Tree(3), Tree(4), Tree(5)]), Tree(42, [Tree(7)])])
-    """
-    "*** YOUR CODE HERE ***"
-    for b in t.branches:
-        cumulative_mul(b)
-    total = t.label
-    for b in t.branches:
-        total *= b.label
-    t.label = total
-
-
 def has_cycle(link):
     """Return whether link contains a cycle.
 
@@ -83,7 +12,13 @@ def has_cycle(link):
     >>> has_cycle(u)
     False
     """
-    "*** YOUR CODE HERE ***"
+    links = []
+    while link is not Link.empty:
+        if link in links:
+            return True
+        links.append(link)
+        link = link.rest
+    return False
 
 
 def has_cycle_constant(link):
@@ -97,7 +32,17 @@ def has_cycle_constant(link):
     >>> has_cycle_constant(t)
     False
     """
-    "*** YOUR CODE HERE ***"
+    if link is Link.empty:
+        return False
+    slow, fast = link, link.rest
+    while fast is not Link.empty:
+        if fast.rest == Link.empty:
+            return False
+        elif fast is slow or fast.rest is slow:
+            return True
+        else:
+            slow, fast = slow.rest, fast.rest.rest
+    return False
 
 
 class Link:
